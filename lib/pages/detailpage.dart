@@ -14,14 +14,17 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+
+
+
   @override
   Widget build(BuildContext context) {
     FoodNotifier foodNotifier = Provider.of<FoodNotifier>(context);
-
     _onFoodDeleted(Food food) {
-      Navigator.pop(context);
       foodNotifier.deleteFood(food);
+      Navigator.pop(context);
     }
+
 
     return Scaffold(
       // backgroundColor: Colors.amberAccent[200],

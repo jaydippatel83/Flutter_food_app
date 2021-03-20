@@ -1,7 +1,7 @@
 
-class User {
+class UserData {
   String displayName;
   String email;
   String password; 
-  User();
+  UserData();
 }

@@ -3,8 +3,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/firebase_auth/firebase_auth.dart';
+import 'package:flutter_food_app/notifire/auth_notifire.dart';
 import 'package:flutter_food_app/notifire/food_notifire.dart';
+import 'package:flutter_food_app/pages/home.dart';
 import 'package:flutter_food_app/provider/food_provider.dart';
+import 'package:flutter_food_app/screens/loginscreen.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:provider/provider.dart'; 
 import 'firebase_auth/auth_screen.dart'; 
@@ -15,13 +18,16 @@ void main() async {
 
   // FirebaseCrashlytics.instance.crash();
 
-  FirebaseCrashlytics.instance.setCustomKey('str_key', 'hello');
-  FirebaseCrashlytics.instance.log("Higgs-Boson detected! Bailing out");
-  FirebaseCrashlytics.instance.setUserIdentifier("12345");
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  // FirebaseCrashlytics.instance.setCustomKey('str_key', 'hello');
+  // FirebaseCrashlytics.instance.log("Higgs-Boson detected! Bailing out");
+  // FirebaseCrashlytics.instance.setUserIdentifier("12345");
+  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   runApp(MultiProvider(
     providers: [
+      ChangeNotifierProvider(
+         create: (context)=> AuthNotifier(),
+      ),
       Provider<FirebaseAuthService>(
         create: (_) => FirebaseAuthService(FirebaseAuth.instance),
       ),
@@ -66,7 +72,12 @@ class _MyAppState extends State<MyApp> {
       ],
       child: SplashScreen(
           seconds: 14,
-          navigateAfterSeconds: new AuthenticationWrappeer(),
+          navigateAfterSeconds: Consumer<AuthNotifier>(
+            builder: (context,notifire,child){
+              return notifire.user != null ? HomePage() : Login();
+            },
+          ),
+          // navigateAfterSeconds: new AuthenticationWrappeer(),
           title: new Text(
             'Welcome Fast-Food App',
             style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0),

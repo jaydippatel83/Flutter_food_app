@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class FoodForm extends StatefulWidget {
-  bool isUpdate;
+  final bool isUpdate;
   FoodForm({@required this.isUpdate});
   @override
   _FoodFormState createState() => _FoodFormState();
@@ -191,7 +191,7 @@ class _FoodFormState extends State<FoodForm> {
     if (!form.validate()) {
       return;
     }
-    form.save();
+    form.save(); 
     _currentFood.subIngredients=_subingredients; 
     uploadFoodAndImage(_currentFood,widget.isUpdate,_imageFile,_onFoodUploaded); 
   }

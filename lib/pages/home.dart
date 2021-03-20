@@ -36,6 +36,8 @@ class _HomePageState extends State<HomePage> {
   final auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
     return Scaffold(
       key: _scaffoldKey,
       drawer: Drawer(
@@ -252,19 +254,43 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Text("Add"),
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => FoodForm(
-                    isUpdate: false,
-                  )));
-        },
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            backgroundColor: Colors.amberAccent,
+            heroTag: "btn1",
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => FoodForm(
+                        isUpdate: false,
+                      )));
+            },
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
+            backgroundColor: Colors.red,
+            heroTag: "btn2",
+            child: Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              signout(authNotifier);
+            },
+          ),
+        ],
       ),
     );
   }
 
   Widget _createHeader() {
+    // AuthNotifier authNotifier =
+    //     Provider.of<AuthNotifier>(context, listen: false);
     // AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
     // getUserData(authNotifier);
     // var email = authNotifier.userList.map((e) => e.email);
@@ -286,7 +312,10 @@ class _HomePageState extends State<HomePage> {
             bottom: 12.0,
             left: 16.0,
             child: Text(
-              " Fast Food App",
+              "Fast food",
+              // authNotifier.user != null
+              //     ? authNotifier.user.displayName
+              //     : " ",
               style: TextStyle(
                   color: Colors.amberAccent,
                   fontSize: 20.0,
@@ -325,7 +354,7 @@ class _HomePageState extends State<HomePage> {
       padding: EdgeInsets.only(top: 25.0),
       child: Column(
         children: [
-          _customeAppbar(),
+          _customeAppbar(context),
           Expanded(
             child: ListView(
               children: [
@@ -533,14 +562,18 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget _customeAppbar() {
+Widget _customeAppbar(context) {
+  AuthNotifier authNotifier = Provider.of<AuthNotifier>(context, listen: false);
+
   return Container(
     padding: EdgeInsets.all(16),
     child: Row(
       children: [
         RichText(
           text: TextSpan(
-              text: "Find Your'\n",
+              text: authNotifier.user.email != null
+                  ? authNotifier.user.email + '\n'
+                  : "Find Your'\n",
               style: TextStyle(
                   color: Colors.black26,
                   fontSize: 20,

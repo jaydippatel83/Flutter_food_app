@@ -1,20 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserData {
-  String email;
-  String username;
-  UserData();
-  UserData.fromMap(Map<String, dynamic> user) {
-    email = user['email'];
-    username = user['username'];
-  }
-  Map<String, dynamic> toMap() {
-    return {
-      'email': email,
-      'username': username,
-    };
-  }
-}
+// class UserData {
+//   String email;
+//   String username;
+//   UserData();
+//   UserData.fromMap(Map<String, dynamic> user) {
+//     email = user['email'];
+//     username = user['username'];
+//   }
+//   Map<String, dynamic> toMap() {
+//     return {
+//       'email': email,
+//       'username': username,
+//     };
+//   }
+// }
 
 class Food {
   String id;
